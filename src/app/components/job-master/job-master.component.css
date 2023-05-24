@@ -29,3 +29,9 @@
   bottom: 4px;
   right: 6px;
 }
+
+.centerAll {
+  display: flex;
+  align-items: baseline;
+  margin-top: 2rem;
+}
