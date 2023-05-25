@@ -12,9 +12,9 @@ export class JobMasterVariableService {
   descJob: any;
   form!: FormGroup;
   jobStat: any;
-  internal: any = false;
-  external: any = false;
+  internal: any = true;
+  external: any = true;
   status: any;
   notes: any;
-  jobPoll: any;
+  jobPoll: any = '1';
 }
