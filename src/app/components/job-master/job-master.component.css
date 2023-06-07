@@ -1,3 +1,8 @@
+mat-card.form {
+  margin: 1rem;
+  border-radius: 15px;
+}
+
 .title-list {
   position: relative;
   border-bottom: 4px solid;
@@ -23,63 +28,92 @@
   font-weight: 500;
 }
 
-.button-close {
+.button-tambah {
   position: absolute;
   height: 45px;
   bottom: 4px;
   right: 6px;
 }
 
-.centerAll {
-  display: flex;
-  align-items: baseline;
-  /* margin-top: 2rem; */
+.button-back {
+  position: absolute;
+  height: 45px;
+  top: 75px;
+  left: 20px;
 }
 
-mat-card.jobMaster {
+mat-card.tabel-informasi-employee {
+  margin-top: 1rem;
+  border-radius: 15px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-mat-form-field {
-  width: 100%;
+mat-card.tambah-informasi-employee {
+  margin-top: 5rem;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
-.btnSave {
-  background-color: #199e60;
-  color: #ffffff;
+tr.line-header {
+  border-top: solid 1px rgb(224, 224, 224);
 }
 
-.btnSave:hover {
-  background-color: #127949;
-  color: #ffffff;
+tr.color-row:nth-child(odd) {
+  background-color: #f2f2f2;
 }
 
-.btnClear {
-  background-color: #ff9d2c;
-  color: #ffffff;
+tr.color-row:hover {
+  background: rgb(206, 234, 252);
 }
 
-.btnClear:hover {
-  background-color: #bb9522;
-  color: #ffffff;
+th.text-header {
+  font-weight: bold;
+  font-size: 14px;
 }
 
-.btnDelete {
-  background-color: #086bff;
-  color: #ffffff;
+.button-aktifkan {
+  background-color: #0d9c00;
+  border-color: #0d9c00;
+  color: #fff;
 }
 
-.btnDelete:hover {
-  background-color: #0b5ed7;
-  color: #ffffff;
+.button-aktifkan:hover {
+  background-color: #086300;
+  border-color: #086300;
+  color: #fff;
 }
 
-.btnExit {
-  background-color: #e63749;
-  color: #ffffff;
+.button-non-aktifkan {
+  background-color: #f44336;
+  border-color: #f44336;
+  color: #fff;
 }
 
-.btnExit:hover {
-  background-color: #bb2d3b;
-  color: #ffffff;
+.button-non-aktifkan:hover {
+  background-color: #a82f26;
+  border-color: #a82f26;
+  color: #fff;
+}
+
+mat-card.tambah-informasi-employee {
+  margin-top: 1rem;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.noData {
+  font-family: Roboto;
+  color: rgb(97, 97, 97);
+  font-weight: 500;
+  background-color: #f2f2f2;
+}
+
+.seGaris {
+  align-items: baseline;
+}
+
+.fontSearch {
+  font-family: Roboto;
+  color: rgb(97, 97, 97);
+  font-weight: 500;
 }
