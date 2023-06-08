@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
-import { DetailJobComponent } from './detail-job/detail-job.component';
+import { EditJobComponent } from './edit-job/edit-job.component';
 import { JobMasterVariableService } from 'src/app/services/variable/job-master/job-master-variable.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -50,14 +50,14 @@ export class JobMasterComponent implements OnInit {
       });
   }
 
-  detailJob() {
+  editJob() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = false;
     dialogConfig.disableClose = false;
     dialogConfig.width = '50%';
     dialogConfig.height = '85%';
     this.dialog
-      .open(DetailJobComponent, dialogConfig)
+      .open(EditJobComponent, dialogConfig)
       .afterClosed()
       .subscribe((res) => {
         console.log(res);

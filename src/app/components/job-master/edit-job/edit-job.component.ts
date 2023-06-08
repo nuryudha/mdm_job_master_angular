@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
-import { DetailJobService } from 'src/app/services/variable/job-master/detail-job/detail-job.service';
+import { EditJobService } from 'src/app/services/variable/job-master/edit-job/edit-job.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-detail-job',
-  templateUrl: './detail-job.component.html',
-  styleUrls: ['./detail-job.component.css'],
+  selector: 'app-edit-job',
+  templateUrl: './edit-job.component.html',
+  styleUrls: ['./edit-job.component.css'],
 })
-export class DetailJobComponent implements OnInit {
+export class EditJobComponent implements OnInit {
   constructor(
-    public variable: DetailJobService,
-    public dialogRef: MatDialogRef<DetailJobComponent>,
+    public variable: EditJobService,
+    public dialogRef: MatDialogRef<EditJobComponent>,
     private formBuilder: FormBuilder
   ) {}
 
