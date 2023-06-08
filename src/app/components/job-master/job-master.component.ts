@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
+import { DetailJobComponent } from './detail-job/detail-job.component';
+import { JobMasterVariableService } from 'src/app/services/variable/job-master/job-master-variable.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
 import { TambahJobComponent } from './tambah-job/tambah-job.component';
 
 @Component({
@@ -12,38 +15,32 @@ import { TambahJobComponent } from './tambah-job/tambah-job.component';
   styleUrls: ['./job-master.component.css'],
 })
 export class JobMasterComponent implements OnInit {
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private dialog: MatDialog,
+    public variable: JobMasterVariableService
+  ) {}
 
   ngOnInit(): void {
     this.ngAfterViewInit();
-    this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    this.status_non_aktif = true;
+    this.variable.dataSource = new MatTableDataSource<PeriodicElement>(
+      ELEMENT_DATA
+    );
+    this.variable.status_non_aktif = true;
   }
 
   @ViewChild(MatPaginator) MatPaginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  displayedColumns: string[] = [
-    'name',
-    'position',
-    'weight',
-    'symbol',
-    'action',
-  ];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  searchJob: any;
-  status_aktif = false;
-  status_non_aktif = false;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.MatPaginator;
-    this.dataSource.sort = this.sort;
+    this.variable.dataSource.paginator = this.MatPaginator;
+    this.variable.dataSource.sort = this.sort;
   }
 
   tambahJob() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = false;
-    dialogConfig.disableClose = false;
-    dialogConfig.width = '70%';
+    dialogConfig.disableClose = true;
+    dialogConfig.width = '50%';
     dialogConfig.height = '85%';
     this.dialog
       .open(TambahJobComponent, dialogConfig)
@@ -53,14 +50,83 @@ export class JobMasterComponent implements OnInit {
       });
   }
 
-  changeStatus() {
-    if (this.status_aktif == true) {
-      this.status_non_aktif = true;
-      this.status_aktif = false;
-    } else {
-      this.status_non_aktif = false;
-      this.status_aktif = true;
-    }
+  detailJob() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.disableClose = false;
+    dialogConfig.width = '50%';
+    dialogConfig.height = '85%';
+    this.dialog
+      .open(DetailJobComponent, dialogConfig)
+      .afterClosed()
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }
+
+  // changeStatus(element: any) {
+  //   console.log(element);
+  //   if (this.variable.status_aktif == true) {
+  //     Swal.fire({
+  //       position: 'center',
+  //       icon: 'question',
+  //       title: 'Konfirmasi',
+  //       text: 'Apakah anda yakin ingin mengaktifkan?',
+  //       showConfirmButton: true,
+  //       confirmButtonText: 'Ya',
+  //       confirmButtonColor: '#335980',
+  //       showCancelButton: true,
+  //       cancelButtonText: 'Tidak',
+  //       cancelButtonColor: '#58D68D',
+  //     }).then((res) => {
+  //       if (res.isConfirmed) {
+  //         this.variable.status_non_aktif = true;
+  //         this.variable.status_aktif = false;
+  //       } else {
+  //       }
+  //     });
+  //   } else {
+  //     Swal.fire({
+  //       position: 'center',
+  //       icon: 'question',
+  //       title: 'Konfirmasi',
+  //       text: 'Apakah anda yakin ingin menonaktifkan?',
+  //       showConfirmButton: true,
+  //       confirmButtonText: 'Ya',
+  //       confirmButtonColor: '#335980',
+  //       showCancelButton: true,
+  //       cancelButtonText: 'Tidak',
+  //       cancelButtonColor: '#58D68D',
+  //     }).then((res) => {
+  //       if (res.isConfirmed) {
+  //         this.variable.status_non_aktif = false;
+  //         this.variable.status_aktif = true;
+  //       } else {
+  //       }
+  //     });
+  //   }
+  // }
+
+  changeStatus(element: PeriodicElement) {
+    console.log(element);
+    Swal.fire({
+      position: 'center',
+      icon: 'question',
+      title: 'Konfirmasi',
+      text: `Apakah Anda yakin ingin ${
+        element.showChangeStatusButton ? 'menonaktifkan' : 'mengaktifkan'
+      }?`,
+      showConfirmButton: true,
+      confirmButtonText: 'Ya',
+      confirmButtonColor: '#335980',
+      showCancelButton: true,
+      cancelButtonText: 'Tidak',
+      cancelButtonColor: '#58D68D',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        element.showChangeStatusButton = !element.showChangeStatusButton;
+      }
+    });
   }
 }
 
@@ -70,17 +136,78 @@ export interface PeriodicElement {
   position: number;
   weight: number;
   symbol: string;
+  showChangeStatusButton: any;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+  {
+    position: 1,
+    name: 'Hydrogen',
+    weight: 1.0079,
+    symbol: 'H',
+    showChangeStatusButton: false,
+  },
+  {
+    position: 2,
+    name: 'Helium',
+    weight: 4.0026,
+    symbol: 'He',
+    showChangeStatusButton: false,
+  },
+  {
+    position: 3,
+    name: 'Lithium',
+    weight: 6.941,
+    symbol: 'Li',
+    showChangeStatusButton: false,
+  },
+  {
+    position: 4,
+    name: 'Beryllium',
+    weight: 9.0122,
+    symbol: 'Be',
+    showChangeStatusButton: true,
+  },
+  {
+    position: 5,
+    name: 'Boron',
+    weight: 10.811,
+    symbol: 'B',
+    showChangeStatusButton: false,
+  },
+  {
+    position: 6,
+    name: 'Carbon',
+    weight: 12.0107,
+    symbol: 'C',
+    showChangeStatusButton: true,
+  },
+  {
+    position: 7,
+    name: 'Nitrogen',
+    weight: 14.0067,
+    symbol: 'N',
+    showChangeStatusButton: false,
+  },
+  {
+    position: 8,
+    name: 'Oxygen',
+    weight: 15.9994,
+    symbol: 'O',
+    showChangeStatusButton: true,
+  },
+  {
+    position: 9,
+    name: 'Fluorine',
+    weight: 18.9984,
+    symbol: 'F',
+    showChangeStatusButton: false,
+  },
+  {
+    position: 10,
+    name: 'Neon',
+    weight: 20.1797,
+    symbol: 'Ne',
+    showChangeStatusButton: false,
+  },
 ];

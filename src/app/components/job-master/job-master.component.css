@@ -68,7 +68,9 @@ tr.color-row:hover {
 
 th.text-header {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
+  background-color: rgb(159, 204, 255);
+  /* color: white; */
 }
 
 .button-aktifkan {
@@ -93,6 +95,16 @@ th.text-header {
   background-color: #a82f26;
   border-color: #a82f26;
   color: #fff;
+}
+
+.btn-edit {
+  background-color: #086bff;
+  color: #ffffff;
+}
+
+.btn-edit:hover {
+  background-color: #08449e;
+  color: #ffffff;
 }
 
 mat-card.tambah-informasi-employee {

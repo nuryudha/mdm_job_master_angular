@@ -1,0 +1,97 @@
+.title-list {
+  position: relative;
+  border-bottom: 4px solid;
+  border-bottom-color: #dcdcdc;
+}
+
+.title-list span {
+  display: absolute;
+  font-size: 25px;
+  border-bottom: 4px solid #fcbd00;
+  padding-bottom: 8px;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.title-font {
+  font-family: Roboto;
+  color: rgb(97, 97, 97);
+  font-weight: 500;
+}
+
+.button-close {
+  position: absolute;
+  height: 45px;
+  bottom: 4px;
+  right: 6px;
+}
+
+.centerAll {
+  display: flex;
+  align-items: baseline;
+  /* margin-top: 2rem; */
+}
+
+mat-card.jobMaster {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.btnSave {
+  background-color: #199e60;
+  color: #ffffff;
+}
+
+.btnSave:hover {
+  background-color: #127949;
+  color: #ffffff;
+}
+
+.btnClear {
+  background-color: #ff9d2c;
+  color: #ffffff;
+}
+
+.btnClear:hover {
+  background-color: #bb9522;
+  color: #ffffff;
+}
+
+/* .btnDelete {
+  background-color: #086bff;
+  color: #ffffff;
+}
+
+.btnDelete:hover {
+  background-color: #0b5ed7;
+  color: #ffffff;
+} */
+
+/* .btnExit {
+  background-color: #e63749;
+  color: #ffffff;
+}
+
+.btnExit:hover {
+  background-color: #bb2d3b;
+  color: #ffffff;
+} */
+
+::ng-deep .row {
+  --bs-gutter-x: 1px;
+}
+
+.button-close {
+  color: rgb(133, 132, 132);
+}
+
+.button-close:hover {
+  color: #bb2d3b;
+}

@@ -12,9 +12,9 @@ export class TambahJobService {
   descJob: any;
   form!: FormGroup;
   jobStat: any;
-  internal: any = true;
-  external: any = true;
-  status: any;
+  internal: any = false;
+  external: any = false;
+  status: any = '0 - ACTIVE';
   notes: any;
   jobPoll: any = '1';
 }

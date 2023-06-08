@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { JobMasterVariableService } from 'src/app/services/variable/job-master/job-master-variable.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import { TambahJobService } from 'src/app/services/variable/job-master/tambah-job/tambah-job.service';
 
 @Component({
   selector: 'app-tambah-job',
@@ -10,7 +11,8 @@ import { JobMasterVariableService } from 'src/app/services/variable/job-master/j
 })
 export class TambahJobComponent implements OnInit {
   constructor(
-    public variable: JobMasterVariableService,
+    public variable: TambahJobService,
+    public dialogRef: MatDialogRef<TambahJobComponent>,
     private formBuilder: FormBuilder
   ) {}
 
@@ -24,7 +26,7 @@ export class TambahJobComponent implements OnInit {
       codeCompany: ['', [Validators.required]],
       descJob: ['', [Validators.required]],
       checkbox: ['', [Validators.required]],
-      status: ['', [Validators.required]],
+      status: { value: '', disabled: true },
       notes: ['', [Validators.required]],
       jobPoll: ['', [Validators.required]],
     });
@@ -46,10 +48,14 @@ export class TambahJobComponent implements OnInit {
     this.variable.form.controls.codeJob.reset();
     this.variable.form.controls.codeCompany.reset();
     this.variable.form.controls.descJob.reset();
-    this.variable.internal = true;
-    this.variable.external = true;
+    this.variable.internal = false;
+    this.variable.external = false;
     this.variable.form.controls.status.reset();
     this.variable.form.controls.notes.reset();
     this.variable.jobPoll = '1';
+  }
+
+  closeTambahJob() {
+    this.dialogRef.close();
   }
 }
