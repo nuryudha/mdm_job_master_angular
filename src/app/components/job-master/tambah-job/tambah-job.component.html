@@ -24,7 +24,8 @@
               oninput="this.value = this.value.toUpperCase()"
             />
             <mat-hint>
-              {{ form.controls.codeJob.value.length }}/3 characters
+              Maksimal 3 karakter
+              <!-- {{ form.controls.codeJob.value.length }}/3 characters -->
             </mat-hint>
             <mat-error *ngIf="form.controls.codeJob.hasError('required')"
               >INI ERROR</mat-error
@@ -33,29 +34,29 @@
         </div>
       </div>
 
-      <!-- ! Kode Perusahaan DUMMY -->
+      <!-- ! Kode Perusahaan -->
       <div class="row centerAll">
         <h4 for="bank" class="col-3" required>Kode Perusahaan</h4>
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="outline">
-            <mat-label>Number</mat-label>
-            <input
-              type="text"
-              placeholder="Pick one"
-              aria-label="Number"
-              matInput
+            <mat-select
+              placeholder="--SILAHKAN PILIH--"
               formControlName="codeCompany"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete #auto="matAutocomplete">
+            >
+              <mat-select-filter
+                [displayMember]="'kode_perus_disp'"
+                [array]="dataKodePerusahaan"
+                (filteredReturn)="filteredKodePerusahaan = $event"
+              >
+              </mat-select-filter>
               <mat-option
-                *ngFor="let option of filteredOptions | async"
+                *ngFor="let option of filteredKodePerusahaan"
                 [value]="option.kode_perusahaan"
               >
                 {{ option.kode_perus_disp }}
               </mat-option>
-            </mat-autocomplete>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
@@ -68,7 +69,6 @@
           <mat-form-field appearance="outline">
             <mat-select
               placeholder="--SILAHKAN PILIH--"
-              name="codeCompany"
               formControlName="codeCompany"
             >
               <mat-option> --SILAHKAN PILIH-- </mat-option>
@@ -94,6 +94,7 @@
         </div>
       </div>
 
+      <!-- TODO : Checkbox dalam formcontrolname masih bingung -->
       <!-- ! Job Status -->
       <div class="row centerAll mt-3 mb-3">
         <h4 for="bank" class="col-3" required>Job Status</h4>
@@ -113,6 +114,11 @@
             formControlName="checkbox"
             >External</mat-checkbox
           >
+
+          <mat-error style="font-size: 12px; color: #666666"
+            ><span style="color: red">*</span>
+            Please select at least one checkbox.
+          </mat-error>
         </div>
       </div>
 

@@ -26,15 +26,6 @@ export class TambahJobComponent implements OnInit {
 
   ngOnInit(): void {
     this.cekValidasi();
-    this.filteredOptions = this.form.get('codeCompany')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || ''))
-    );
-
-    // this.filteredOptions = this.form.get('codeCompany').valueChanges.pipe(
-    //   startWith(''),
-    //   map((value) => this._filter(value || ''))
-    // );
   }
 
   codeJob: any;
@@ -42,29 +33,20 @@ export class TambahJobComponent implements OnInit {
   descJob: any;
   form!: FormGroup;
   jobStat: any;
-  internal: any = false;
-  external: any = false;
+  internal: any;
+  external: any;
   status: any = '0 - ACTIVE';
   notes: any;
   jobPoll: any = '1';
   dataKodePerusahaan: listKodePerusahaan[] = [
-    { kode_perusahaan: 'BMR', kode_perus_disp: 'BMRS - Mediator BMRI' },
+    { kode_perusahaan: 'BMR', kode_perus_disp: 'BMR - Mediator BMRI' },
     { kode_perusahaan: 'CRM', kode_perus_disp: 'CRM - CRM' },
     { kode_perusahaan: 'DEAL', kode_perus_disp: 'DEAL - Dealer' },
     { kode_perusahaan: 'DS', kode_perus_disp: 'DS - Direct Sales' },
     { kode_perusahaan: 'MDR', kode_perus_disp: 'MDR - Mediator' },
     { kode_perusahaan: 'MUF', kode_perus_disp: 'MUF - Mandiri Utama Finance' },
   ];
-
-  myControl = new FormControl('');
-  filteredOptions!: Observable<listKodePerusahaan[]> | undefined;
-
-  private _filter(value: any): listKodePerusahaan[] {
-    const filterValue = value.toLowerCase();
-    return this.dataKodePerusahaan.filter((option) =>
-      option.kode_perus_disp.toLowerCase().includes(filterValue)
-    );
-  }
+  filteredKodePerusahaan: any = this.dataKodePerusahaan;
 
   cekValidasi() {
     this.form = this.formBuilder.group({
