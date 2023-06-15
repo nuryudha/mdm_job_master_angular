@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="ms-2 me-2">
-    <form (ngSubmit)="saveJob()" [formGroup]="variable.form">
+    <form (ngSubmit)="saveJob()" [formGroup]="form">
       <!-- ! Kode Pekerjaan -->
       <div class="row centerAll mt-3">
         <h4 for="bank" class="col-3">Kode Pekerjaan</h4>
@@ -23,23 +23,45 @@
               maxlength="3"
               oninput="this.value = this.value.toUpperCase()"
             />
-            <!-- <mat-select
-              placeholder="--SILAHKAN PILIH--"
-              formControlName="codeJob"
-            >
-              <mat-option> --SILAHKAN PILIH-- </mat-option>
-            </mat-select> -->
-
-            <mat-error
-              *ngIf="variable.form.controls.codeJob.hasError('required')"
+            <mat-hint>
+              {{ form.controls.codeJob.value.length }}/3 characters
+            </mat-hint>
+            <mat-error *ngIf="form.controls.codeJob.hasError('required')"
               >INI ERROR</mat-error
             >
           </mat-form-field>
         </div>
       </div>
 
-      <!-- ! Kode Perusahaan -->
+      <!-- ! Kode Perusahaan DUMMY -->
       <div class="row centerAll">
+        <h4 for="bank" class="col-3" required>Kode Perusahaan</h4>
+        <label class="col-1">:</label>
+        <div class="col">
+          <mat-form-field appearance="outline">
+            <mat-label>Number</mat-label>
+            <input
+              type="text"
+              placeholder="Pick one"
+              aria-label="Number"
+              matInput
+              formControlName="codeCompany"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredOptions | async"
+                [value]="option.kode_perusahaan"
+              >
+                {{ option.kode_perus_disp }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- ! Kode Perusahaan -->
+      <!-- * <div class="row centerAll">
         <h4 for="bank" class="col-3" required>Kode Perusahaan</h4>
         <label class="col-1">:</label>
         <div class="col">
@@ -50,10 +72,16 @@
               formControlName="codeCompany"
             >
               <mat-option> --SILAHKAN PILIH-- </mat-option>
+              <mat-option value="BMRI">BMR - Mediator BMRI </mat-option>
+              <mat-option value="CRM"> CRM - CRM </mat-option>
+              <mat-option value="DEAL"> DEAL - Dealer </mat-option>
+              <mat-option value="DS"> DS - Direct Sales </mat-option>
+              <mat-option value="MDR"> MDR - Mediator </mat-option>
+              <mat-option value="MUF"> MUF - Mandiri Utama Finance </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-      </div>
+      </div> -->
 
       <!-- ! Deskripsi Pekerjaan -->
       <div class="row centerAll">
@@ -61,11 +89,7 @@
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill">
-            <input
-              matInput
-              [(ngModel)]="variable.descJob"
-              formControlName="descJob"
-            />
+            <input matInput [(ngModel)]="descJob" formControlName="descJob" />
           </mat-form-field>
         </div>
       </div>
@@ -76,7 +100,7 @@
         <label class="col-1">:</label>
         <div class="col">
           <mat-checkbox
-            [(ngModel)]="variable.internal"
+            [(ngModel)]="internal"
             [color]="'primary'"
             formControlName="checkbox"
             class="me-5"
@@ -84,7 +108,7 @@
           >
 
           <mat-checkbox
-            [(ngModel)]="variable.external"
+            [(ngModel)]="external"
             [color]="'primary'"
             formControlName="checkbox"
             >External</mat-checkbox
@@ -98,10 +122,7 @@
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill"
-            ><input
-              matInput
-              [(ngModel)]="variable.status"
-              formControlName="status"
+            ><input matInput [(ngModel)]="status" formControlName="status"
           /></mat-form-field>
         </div>
       </div>
@@ -114,7 +135,7 @@
           <mat-form-field appearance="fill">
             <textarea
               matInput
-              [(ngModel)]="variable.notes"
+              [(ngModel)]="notes"
               formControlName="notes"
             ></textarea>
           </mat-form-field>
@@ -130,7 +151,7 @@
         <div class="col">
           <mat-radio-group
             aria-label="Select an option"
-            [(ngModel)]="variable.jobPoll"
+            [(ngModel)]="jobPoll"
             formControlName="jobPoll"
           >
             <mat-radio-button [color]="'primary'" value="1" class="me-4"

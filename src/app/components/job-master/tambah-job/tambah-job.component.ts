@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
 
 import { MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { TambahJobService } from 'src/app/services/variable/job-master/tambah-job/tambah-job.service';
+import { listKodePerusahaan } from 'src/app/models/job-master/model-job-master';
 
 @Component({
   selector: 'app-tambah-job',
@@ -18,10 +26,48 @@ export class TambahJobComponent implements OnInit {
 
   ngOnInit(): void {
     this.cekValidasi();
+    this.filteredOptions = this.form.get('codeCompany')?.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value || ''))
+    );
+
+    // this.filteredOptions = this.form.get('codeCompany').valueChanges.pipe(
+    //   startWith(''),
+    //   map((value) => this._filter(value || ''))
+    // );
+  }
+
+  codeJob: any;
+  codeCompany: any;
+  descJob: any;
+  form!: FormGroup;
+  jobStat: any;
+  internal: any = false;
+  external: any = false;
+  status: any = '0 - ACTIVE';
+  notes: any;
+  jobPoll: any = '1';
+  dataKodePerusahaan: listKodePerusahaan[] = [
+    { kode_perusahaan: 'BMR', kode_perus_disp: 'BMR - Mediator BMRI' },
+    { kode_perusahaan: 'CRM', kode_perus_disp: 'CRM - CRM' },
+    { kode_perusahaan: 'DEAL', kode_perus_disp: 'DEAL - Dealer' },
+    { kode_perusahaan: 'DS', kode_perus_disp: 'DS - Direct Sales' },
+    { kode_perusahaan: 'MDR', kode_perus_disp: 'MDR - Mediator' },
+    { kode_perusahaan: 'MUF', kode_perus_disp: 'MUF - Mandiri Utama Finance' },
+  ];
+
+  myControl = new FormControl('');
+  filteredOptions!: Observable<listKodePerusahaan[]> | undefined;
+
+  private _filter(value: any): listKodePerusahaan[] {
+    const filterValue = value.toLowerCase();
+    return this.dataKodePerusahaan.filter((option) =>
+      option.kode_perus_disp.toLowerCase().includes(filterValue)
+    );
   }
 
   cekValidasi() {
-    this.variable.form = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       codeJob: ['', [Validators.required]],
       codeCompany: ['', [Validators.required]],
       descJob: ['', [Validators.required]],
@@ -33,26 +79,26 @@ export class TambahJobComponent implements OnInit {
   }
 
   saveJob() {
-    console.log(this.variable.codeJob);
-    console.log(this.variable.codeCompany);
-    console.log(this.variable.descJob);
-    console.log(this.variable.internal);
-    console.log(this.variable.external);
-    console.log(this.variable.status);
-    console.log(this.variable.notes);
-    let poll = this.variable.jobPoll;
+    console.log(this.codeJob);
+    console.log(this.form.value.codeCompany);
+    console.log(this.descJob);
+    console.log(this.internal);
+    console.log(this.external);
+    console.log(this.status);
+    console.log(this.notes);
+    let poll = this.jobPoll;
     console.log(poll);
   }
 
   clearInput() {
-    this.variable.form.controls.codeJob.reset();
-    this.variable.form.controls.codeCompany.reset();
-    this.variable.form.controls.descJob.reset();
-    this.variable.internal = false;
-    this.variable.external = false;
-    this.variable.form.controls.status.reset();
-    this.variable.form.controls.notes.reset();
-    this.variable.jobPoll = '1';
+    this.form.controls.codeJob.reset();
+    this.form.controls.codeCompany.reset();
+    this.form.controls.descJob.reset();
+    this.internal = false;
+    this.external = false;
+    this.form.controls.status.reset();
+    this.form.controls.notes.reset();
+    this.jobPoll = '1';
   }
 
   closeTambahJob() {
