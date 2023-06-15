@@ -17,7 +17,6 @@ import { NgModule } from '@angular/core';
 
 const materialComponent = [
   MatCardModule,
-
   MatSelectModule,
   MatSelectFilterModule,
   MatCheckboxModule,

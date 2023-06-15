@@ -35,20 +35,15 @@
       <div class="d-flex flex-row-reverse seGaris mb-3">
         <div>
           <mat-form-field appearance="standard" class="form-search">
-            <input matInput [(ngModel)]="variable.searchJob" />
+            <input matInput [(ngModel)]="searchJob" />
           </mat-form-field>
         </div>
         <div class="me-2 fontSearch">Search :</div>
       </div>
       <!-- TABEL -->
-      <table
-        mat-table
-        matSort
-        [dataSource]="variable.dataSource"
-        style="width: 100%"
-      >
-        <!-- name Column -->
-        <ng-container matColumnDef="name">
+      <table mat-table matSort [dataSource]="dataSource" style="width: 100%">
+        <!-- jobCode Column -->
+        <ng-container matColumnDef="jobCode">
           <th
             mat-header-cell
             *matHeaderCellDef
@@ -56,50 +51,39 @@
             style="width: 7rem"
             mat-sort-header
           >
-            Name
-          </th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-        </ng-container>
-
-        <!-- Nama Column -->
-        <ng-container matColumnDef="position">
-          <th
-            mat-header-cell
-            *matHeaderCellDef
-            class="text-header"
-            style="width: 15rem"
-          >
-            Nama Paket
+            Job Code
           </th>
           <td mat-cell *matCellDef="let element">
-            {{ element.position }}
+            {{ element.empl_job_code }}
           </td>
         </ng-container>
 
-        <!-- weight Column -->
-        <ng-container matColumnDef="weight">
+        <!-- jobDesc Column -->
+        <ng-container matColumnDef="jobDesc">
           <th
             mat-header-cell
             *matHeaderCellDef
             class="text-header"
             style="width: 15rem"
           >
-            Weight
+            Job Description
           </th>
-          <td mat-cell *matCellDef="let element">{{ element.weight }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ element.empl_job_desc }}
+          </td>
         </ng-container>
 
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
+        <!-- status Column -->
+        <ng-container matColumnDef="status">
           <th
             mat-header-cell
             *matHeaderCellDef
             class="text-header"
-            style="width: 7rem"
+            style="width: 15rem"
           >
-            Symbol
+            Status
           </th>
-          <td mat-cell *matCellDef="let element">{{ element.symbol }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.empl_deleted }}</td>
         </ng-container>
 
         <!-- Action Column -->
@@ -117,10 +101,9 @@
               mat-mini-fab
               color="primary"
               class="btn-edit me-3"
-              *ngIf="element.showChangeStatusButton"
               (click)="editJob()"
+              *ngIf="element.empl_deleted == 'ACTIVE'"
             >
-              <!-- *ngIf="variable.status_non_aktif" -->
               <mat-icon>edit</mat-icon>
             </button>
             <button
@@ -128,9 +111,8 @@
               color="warn"
               class="button-non-aktifkan"
               (click)="changeStatus(element)"
-              *ngIf="element.showChangeStatusButton"
+              *ngIf="element.empl_deleted == 'ACTIVE'"
             >
-              <!-- *ngIf="variable.status_non_aktif" -->
               <mat-icon>close_outline</mat-icon>
             </button>
             <button
@@ -138,9 +120,8 @@
               color="primary"
               class="button-aktifkan"
               (click)="changeStatus(element)"
-              *ngIf="!element.showChangeStatusButton"
+              *ngIf="element.empl_deleted == 'NON - ACTIVE'"
             >
-              <!-- *ngIf="variable.status_aktif" -->
               <mat-icon>check</mat-icon>
             </button>
           </td>
@@ -154,12 +135,12 @@
 
         <tr
           mat-header-row
-          *matHeaderRowDef="variable.displayedColumns"
+          *matHeaderRowDef="displayedColumns"
           class="line-header"
         ></tr>
         <tr
           mat-row
-          *matRowDef="let row; columns: variable.displayedColumns"
+          *matRowDef="let row; columns: displayedColumns"
           class="color-row"
         ></tr>
       </table>

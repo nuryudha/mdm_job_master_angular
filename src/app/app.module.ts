@@ -3,6 +3,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { EditJobComponent } from './components/job-master/edit-job/edit-job.component';
+import { HttpClientModule } from '@angular/common/http';
 import { JobMasterComponent } from './components/job-master/job-master.component';
 import { KosongComponent } from './components/kosong/kosong.component';
 import { MaterialModule } from './modules/material.module';
@@ -15,7 +16,6 @@ import { TambahJobComponent } from './components/job-master/tambah-job/tambah-jo
     JobMasterComponent,
     KosongComponent,
     TambahJobComponent,
-
     EditJobComponent,
   ],
   imports: [
@@ -23,6 +23,7 @@ import { TambahJobComponent } from './components/job-master/tambah-job/tambah-jo
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

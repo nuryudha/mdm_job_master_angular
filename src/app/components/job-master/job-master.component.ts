@@ -3,11 +3,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { EditJobComponent } from './edit-job/edit-job.component';
 import { JobMasterVariableService } from 'src/app/services/variable/job-master/job-master-variable.service';
+import { MainService } from 'src/app/services/main.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { TambahJobComponent } from './tambah-job/tambah-job.component';
+import { listAllJob } from 'src/app/models/job-master/model-job-master';
 
 @Component({
   selector: 'app-job-master',
@@ -17,23 +19,30 @@ import { TambahJobComponent } from './tambah-job/tambah-job.component';
 export class JobMasterComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
-    public variable: JobMasterVariableService
+    public variable: JobMasterVariableService,
+    private services: MainService
   ) {}
 
   ngOnInit(): void {
     this.ngAfterViewInit();
-    this.variable.dataSource = new MatTableDataSource<PeriodicElement>(
-      ELEMENT_DATA
-    );
-    this.variable.status_non_aktif = true;
+    this.getListAllJob();
+    this.status_non_aktif = true;
+    this.dataSource = new MatTableDataSource(this.dataAllJob);
   }
 
   @ViewChild(MatPaginator) MatPaginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  displayedColumns: string[] = ['jobCode', 'jobDesc', 'status', 'action'];
+  dataSource = new MatTableDataSource<listAllJob>();
+  dataAllJob: listAllJob[] = [];
+  searchJob: any;
+  status_aktif: any = false;
+  status_non_aktif: any = false;
+
   ngAfterViewInit() {
-    this.variable.dataSource.paginator = this.MatPaginator;
-    this.variable.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.MatPaginator;
+    this.dataSource.sort = this.sort;
   }
 
   tambahJob() {
@@ -64,150 +73,99 @@ export class JobMasterComponent implements OnInit {
       });
   }
 
-  // changeStatus(element: any) {
-  //   console.log(element);
-  //   if (this.variable.status_aktif == true) {
-  //     Swal.fire({
-  //       position: 'center',
-  //       icon: 'question',
-  //       title: 'Konfirmasi',
-  //       text: 'Apakah anda yakin ingin mengaktifkan?',
-  //       showConfirmButton: true,
-  //       confirmButtonText: 'Ya',
-  //       confirmButtonColor: '#335980',
-  //       showCancelButton: true,
-  //       cancelButtonText: 'Tidak',
-  //       cancelButtonColor: '#58D68D',
-  //     }).then((res) => {
-  //       if (res.isConfirmed) {
-  //         this.variable.status_non_aktif = true;
-  //         this.variable.status_aktif = false;
-  //       } else {
-  //       }
-  //     });
-  //   } else {
-  //     Swal.fire({
-  //       position: 'center',
-  //       icon: 'question',
-  //       title: 'Konfirmasi',
-  //       text: 'Apakah anda yakin ingin menonaktifkan?',
-  //       showConfirmButton: true,
-  //       confirmButtonText: 'Ya',
-  //       confirmButtonColor: '#335980',
-  //       showCancelButton: true,
-  //       cancelButtonText: 'Tidak',
-  //       cancelButtonColor: '#58D68D',
-  //     }).then((res) => {
-  //       if (res.isConfirmed) {
-  //         this.variable.status_non_aktif = false;
-  //         this.variable.status_aktif = true;
-  //       } else {
-  //       }
-  //     });
-  //   }
-  // }
-
-  changeStatus(element: PeriodicElement) {
-    console.log(element);
-    Swal.fire({
-      position: 'center',
-      icon: 'question',
-      title: 'Konfirmasi',
-      text: `Apakah Anda yakin ingin ${
-        element.showChangeStatusButton ? 'menonaktifkan' : 'mengaktifkan'
-      }?`,
-      showConfirmButton: true,
-      confirmButtonText: 'Ya',
-      confirmButtonColor: '#335980',
-      showCancelButton: true,
-      cancelButtonText: 'Tidak',
-      cancelButtonColor: '#58D68D',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        element.showChangeStatusButton = !element.showChangeStatusButton;
+  getListAllJob() {
+    this.services.getAllJob('allJob').subscribe(
+      (res) => {
+        this.dataAllJob = [];
+        let status: any;
+        console.log(res.body.data);
+        res.body.data.forEach((element: any) => {
+          if (element.empl_deleted == '0') {
+            status = 'ACTIVE';
+          } else if (element.empl_deleted == '1') {
+            status = 'NON - ACTIVE';
+          } else {
+            status = 'UNKNOWN';
+          }
+          this.dataAllJob.push({
+            empl_job_code: element.empl_job_code,
+            empl_job_desc: element.empl_job_desc,
+            empl_deleted: status,
+          });
+        });
+        this.dataSource = new MatTableDataSource(this.dataAllJob);
+        this.ngAfterViewInit();
+      },
+      (err) => {
+        console.log(err);
       }
-    });
+    );
+  }
+
+  changeStatus(status: any) {
+    let status_empl: any;
+    if (status.empl_deleted === 'ACTIVE') {
+      status_empl = '1';
+      let parameter = {
+        empl_job_code: status.empl_job_code,
+        empl_deleted: status_empl,
+      };
+      Swal.fire({
+        position: 'center',
+        icon: 'question',
+        title: 'Konfirmasi',
+        text: 'Apakah anda yakin ingin menonaktifkan?',
+        showConfirmButton: true,
+        confirmButtonText: 'Ya',
+        confirmButtonColor: '#335980',
+        showCancelButton: true,
+        cancelButtonText: 'Tidak',
+        cancelButtonColor: '#58D68D',
+      }).then((res) => {
+        if (res.isConfirmed) {
+          this.services.deleteJob('deleteJob', parameter).subscribe(
+            (res) => {
+              console.log(res);
+              this.getListAllJob();
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        } else {
+        }
+      });
+    } else if (status.empl_deleted === 'NON - ACTIVE') {
+      status_empl = '0';
+      let parameter = {
+        empl_job_code: status.empl_job_code,
+        empl_deleted: status_empl,
+      };
+      Swal.fire({
+        position: 'center',
+        icon: 'question',
+        title: 'Konfirmasi',
+        text: 'Apakah anda yakin ingin mengaktifkan?',
+        showConfirmButton: true,
+        confirmButtonText: 'Ya',
+        confirmButtonColor: '#335980',
+        showCancelButton: true,
+        cancelButtonText: 'Tidak',
+        cancelButtonColor: '#58D68D',
+      }).then((res) => {
+        if (res.isConfirmed) {
+          this.services.deleteJob('deleteJob', parameter).subscribe(
+            (res) => {
+              console.log(res);
+              this.getListAllJob();
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        } else {
+        }
+      });
+    }
   }
 }
-
-// ! ------------------------  DUMMY --------------------------------------------
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-  showChangeStatusButton: any;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {
-    position: 1,
-    name: 'Hydrogen',
-    weight: 1.0079,
-    symbol: 'H',
-    showChangeStatusButton: false,
-  },
-  {
-    position: 2,
-    name: 'Helium',
-    weight: 4.0026,
-    symbol: 'He',
-    showChangeStatusButton: false,
-  },
-  {
-    position: 3,
-    name: 'Lithium',
-    weight: 6.941,
-    symbol: 'Li',
-    showChangeStatusButton: false,
-  },
-  {
-    position: 4,
-    name: 'Beryllium',
-    weight: 9.0122,
-    symbol: 'Be',
-    showChangeStatusButton: true,
-  },
-  {
-    position: 5,
-    name: 'Boron',
-    weight: 10.811,
-    symbol: 'B',
-    showChangeStatusButton: false,
-  },
-  {
-    position: 6,
-    name: 'Carbon',
-    weight: 12.0107,
-    symbol: 'C',
-    showChangeStatusButton: true,
-  },
-  {
-    position: 7,
-    name: 'Nitrogen',
-    weight: 14.0067,
-    symbol: 'N',
-    showChangeStatusButton: false,
-  },
-  {
-    position: 8,
-    name: 'Oxygen',
-    weight: 15.9994,
-    symbol: 'O',
-    showChangeStatusButton: true,
-  },
-  {
-    position: 9,
-    name: 'Fluorine',
-    weight: 18.9984,
-    symbol: 'F',
-    showChangeStatusButton: false,
-  },
-  {
-    position: 10,
-    name: 'Neon',
-    weight: 20.1797,
-    symbol: 'Ne',
-    showChangeStatusButton: false,
-  },
-];
