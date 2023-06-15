@@ -48,7 +48,7 @@ export class TambahJobComponent implements OnInit {
   notes: any;
   jobPoll: any = '1';
   dataKodePerusahaan: listKodePerusahaan[] = [
-    { kode_perusahaan: 'BMR', kode_perus_disp: 'BMR - Mediator BMRI' },
+    { kode_perusahaan: 'BMR', kode_perus_disp: 'BMRS - Mediator BMRI' },
     { kode_perusahaan: 'CRM', kode_perus_disp: 'CRM - CRM' },
     { kode_perusahaan: 'DEAL', kode_perus_disp: 'DEAL - Dealer' },
     { kode_perusahaan: 'DS', kode_perus_disp: 'DS - Direct Sales' },
