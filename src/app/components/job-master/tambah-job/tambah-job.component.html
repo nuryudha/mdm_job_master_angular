@@ -20,11 +20,11 @@
             <input
               matInput
               formControlName="codeJob"
-              maxlength="3"
+              maxlength="4"
               oninput="this.value = this.value.toUpperCase()"
             />
             <mat-hint>
-              Maksimal 3 karakter
+              Maksimal 4 karakter
               <!-- {{ form.controls.codeJob.value.length }}/3 characters -->
             </mat-hint>
             <mat-error *ngIf="form.controls.codeJob.hasError('required')"
@@ -61,35 +61,13 @@
         </div>
       </div>
 
-      <!-- ! Kode Perusahaan -->
-      <!-- * <div class="row centerAll">
-        <h4 for="bank" class="col-3" required>Kode Perusahaan</h4>
-        <label class="col-1">:</label>
-        <div class="col">
-          <mat-form-field appearance="outline">
-            <mat-select
-              placeholder="--SILAHKAN PILIH--"
-              formControlName="codeCompany"
-            >
-              <mat-option> --SILAHKAN PILIH-- </mat-option>
-              <mat-option value="BMRI">BMR - Mediator BMRI </mat-option>
-              <mat-option value="CRM"> CRM - CRM </mat-option>
-              <mat-option value="DEAL"> DEAL - Dealer </mat-option>
-              <mat-option value="DS"> DS - Direct Sales </mat-option>
-              <mat-option value="MDR"> MDR - Mediator </mat-option>
-              <mat-option value="MUF"> MUF - Mandiri Utama Finance </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div> -->
-
       <!-- ! Deskripsi Pekerjaan -->
       <div class="row centerAll">
         <h4 for="bank" class="col-3" required>Deskripsi Pekerjaan</h4>
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill">
-            <input matInput [(ngModel)]="descJob" formControlName="descJob" />
+            <input matInput formControlName="descJob" />
           </mat-form-field>
         </div>
       </div>
@@ -101,17 +79,13 @@
         <label class="col-1">:</label>
         <div class="col">
           <mat-checkbox
-            [(ngModel)]="internal"
             [color]="'primary'"
-            formControlName="checkbox"
+            formControlName="boxInternal"
             class="me-5"
             >Internal</mat-checkbox
           >
 
-          <mat-checkbox
-            [(ngModel)]="external"
-            [color]="'primary'"
-            formControlName="checkbox"
+          <mat-checkbox [color]="'primary'" formControlName="boxExternal"
             >External</mat-checkbox
           >
 
@@ -124,7 +98,7 @@
 
       <!-- ! Status -->
       <div class="row centerAll">
-        <h4 for="bank" class="col-3" required>Job Status</h4>
+        <h4 for="bank" class="col-3" required>Status</h4>
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill"
@@ -139,11 +113,7 @@
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill">
-            <textarea
-              matInput
-              [(ngModel)]="notes"
-              formControlName="notes"
-            ></textarea>
+            <textarea matInput formControlName="notes"></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -157,7 +127,6 @@
         <div class="col">
           <mat-radio-group
             aria-label="Select an option"
-            [(ngModel)]="jobPoll"
             formControlName="jobPoll"
           >
             <mat-radio-button [color]="'primary'" value="1" class="me-4"

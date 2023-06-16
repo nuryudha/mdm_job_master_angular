@@ -23,7 +23,7 @@
     "bootstrap": "^5.2.3",
     "mat-select-filter": "^2.4.1",
     "rxjs": "~6.6.0",
-    "sweetalert2": "^11.7.11",
+    "sweetalert2": "^11.7.12",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
   },
