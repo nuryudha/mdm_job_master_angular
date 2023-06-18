@@ -45,44 +45,24 @@ mat-form-field {
 }
 
 .btnSave {
-  background-color: #199e60;
+  background-color: #0d9c00;
   color: #ffffff;
 }
 
 .btnSave:hover {
-  background-color: #127949;
+  background-color: #086300;
   color: #ffffff;
 }
 
 .btnClear {
-  background-color: #ff9d2c;
+  background-color: #dda705;
   color: #ffffff;
 }
 
 .btnClear:hover {
-  background-color: #bb9522;
+  background-color: #745805;
   color: #ffffff;
 }
-
-/* .btnDelete {
-  background-color: #086bff;
-  color: #ffffff;
-}
-
-.btnDelete:hover {
-  background-color: #0b5ed7;
-  color: #ffffff;
-} */
-
-/* .btnExit {
-  background-color: #e63749;
-  color: #ffffff;
-}
-
-.btnExit:hover {
-  background-color: #bb2d3b;
-  color: #ffffff;
-} */
 
 ::ng-deep .row {
   --bs-gutter-x: 1px;

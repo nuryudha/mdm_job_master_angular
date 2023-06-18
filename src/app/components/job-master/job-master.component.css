@@ -33,6 +33,16 @@ mat-card.form {
   height: 45px;
   bottom: 4px;
   right: 6px;
+  background-color: #086bff;
+  font-size: 15px;
+}
+
+.button-tambah:hover {
+  position: absolute;
+  height: 45px;
+  bottom: 4px;
+  right: 6px;
+  background-color: #08449e;
 }
 
 .button-back {

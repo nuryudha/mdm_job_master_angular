@@ -101,7 +101,7 @@
               mat-mini-fab
               color="primary"
               class="btn-edit me-3"
-              (click)="editJob()"
+              (click)="editJob(element)"
               *ngIf="element.empl_deleted == 'ACTIVE'"
             >
               <mat-icon>edit</mat-icon>

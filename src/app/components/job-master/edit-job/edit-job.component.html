@@ -10,28 +10,21 @@
     </div>
   </div>
   <div class="ms-2 me-2">
-    <form (ngSubmit)="saveJob()" [formGroup]="variable.form">
+    <form (ngSubmit)="saveJob()" [formGroup]="form">
       <!-- ! Kode Pekerjaan -->
       <div class="row centerAll mt-3">
         <h4 for="bank" class="col-3">Kode Pekerjaan</h4>
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="outline">
-            <!-- <input
+            <input
               matInput
               formControlName="codeJob"
               maxlength="3"
               oninput="this.value = this.value.toUpperCase()"
-            /> -->
-            <mat-select
-              placeholder="--SILAHKAN PILIH--"
-              formControlName="codeJob"
-            >
-              <mat-option> --SILAHKAN PILIH-- </mat-option>
-            </mat-select>
+            />
 
-            <mat-error
-              *ngIf="variable.form.controls.codeJob.hasError('required')"
+            <mat-error *ngIf="form.controls.codeJob.hasError('required')"
               >INI ERROR</mat-error
             >
           </mat-form-field>
@@ -46,10 +39,20 @@
           <mat-form-field appearance="outline">
             <mat-select
               placeholder="--SILAHKAN PILIH--"
-              name="codeCompany"
               formControlName="codeCompany"
             >
-              <mat-option> --SILAHKAN PILIH-- </mat-option>
+              <mat-select-filter
+                [displayMember]="'kode_perus_disp'"
+                [array]="dataKodePerusahaan"
+                (filteredReturn)="filteredKodePerusahaan = $event"
+              >
+              </mat-select-filter>
+              <mat-option
+                *ngFor="let option of filteredKodePerusahaan"
+                [value]="option.kode_perusahaan"
+              >
+                {{ option.kode_perus_disp }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -61,47 +64,40 @@
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill">
-            <input
-              matInput
-              [(ngModel)]="variable.descJob"
-              formControlName="descJob"
-            />
+            <input matInput formControlName="descJob" />
           </mat-form-field>
         </div>
       </div>
-
       <!-- ! Job Status -->
       <div class="row centerAll mt-3 mb-3">
         <h4 for="bank" class="col-3" required>Job Status</h4>
         <label class="col-1">:</label>
         <div class="col">
           <mat-checkbox
-            [(ngModel)]="variable.internal"
             [color]="'primary'"
-            formControlName="checkbox"
+            formControlName="boxInternal"
             class="me-5"
             >Internal</mat-checkbox
           >
 
-          <mat-checkbox
-            [(ngModel)]="variable.external"
-            [color]="'primary'"
-            formControlName="checkbox"
+          <mat-checkbox [color]="'primary'" formControlName="boxExternal"
             >External</mat-checkbox
           >
+
+          <mat-error style="font-size: 12px; color: #666666"
+            ><span style="color: red">*</span>
+            Please select at least one checkbox.
+          </mat-error>
         </div>
       </div>
 
       <!-- ! Status -->
       <div class="row centerAll">
-        <h4 for="bank" class="col-3" required>Job Status</h4>
+        <h4 for="bank" class="col-3" required>Status</h4>
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill"
-            ><input
-              matInput
-              [(ngModel)]="variable.status"
-              formControlName="status"
+            ><input matInput [(ngModel)]="status" formControlName="status"
           /></mat-form-field>
         </div>
       </div>
@@ -112,11 +108,7 @@
         <label class="col-1">:</label>
         <div class="col">
           <mat-form-field appearance="fill">
-            <textarea
-              matInput
-              [(ngModel)]="variable.notes"
-              formControlName="notes"
-            ></textarea>
+            <textarea matInput formControlName="notes"></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -130,13 +122,12 @@
         <div class="col">
           <mat-radio-group
             aria-label="Select an option"
-            [(ngModel)]="variable.jobPoll"
             formControlName="jobPoll"
           >
-            <mat-radio-button [color]="'primary'" value="1" class="me-4"
+            <mat-radio-button [color]="'primary'" value="0" class="me-4"
               >Bukan Pooling</mat-radio-button
             >
-            <mat-radio-button [color]="'primary'" value="2"
+            <mat-radio-button [color]="'primary'" value="1"
               >Pooling</mat-radio-button
             >
           </mat-radio-group>
@@ -158,11 +149,8 @@
         </div>
       </div>
 
-      <div class="d-flex flex-row-reverse mt-4">
-        <div class="p">
-          <button mat-raised-button class="btnSave me-2">Save</button>
-        </div>
-        <div class="p">
+      <div class="d-flex mt-4">
+        <div class="me-auto p">
           <button
             mat-raised-button
             class="btnClear me-2"
@@ -171,21 +159,10 @@
             Clear
           </button>
         </div>
-        <!-- <div class="p">
-          <button mat-raised-button class="btnDelete me-2">Delete</button>
-        </div>
-
         <div class="p">
-          <button mat-raised-button class="btnExit me-2">Exit</button>
-        </div> -->
+          <button mat-raised-button class="btnSave me-2">Save</button>
+        </div>
       </div>
     </form>
   </div>
-
-  <!-- <h3 class="mt-3">
-    * Flag Pooling,jika pilihannya Pooling maka job tersebut harus dimapping ke
-    DLC di tab Employee <br />
-    jika pilihannya BUKAN POOLING, maka job tersebut tidak harus dimapping ke
-    DLC di tab Employee
-  </h3> -->
 </div>

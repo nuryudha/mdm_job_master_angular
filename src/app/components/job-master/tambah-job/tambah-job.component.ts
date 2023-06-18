@@ -6,13 +6,17 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import {
+  checkKodePekerjaan,
+  listKodePerusahaan,
+} from 'src/app/models/job-master/model-job-master';
 import { map, startWith } from 'rxjs/operators';
 
+import { MainService } from 'src/app/services/main.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { TambahJobService } from 'src/app/services/variable/job-master/tambah-job/tambah-job.service';
-import { listKodePerusahaan } from 'src/app/models/job-master/model-job-master';
 
 @Component({
   selector: 'app-tambah-job',
@@ -23,18 +27,24 @@ export class TambahJobComponent implements OnInit {
   constructor(
     public variable: TambahJobService,
     public dialogRef: MatDialogRef<TambahJobComponent>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private services: MainService
   ) {}
 
   ngOnInit(): void {
     this.cekValidasi();
+    // * HANYA NGECK 1 kali (kalo pake keyup malah jadi ngecek berkali")
+    this.form.controls.codeJob.valueChanges.subscribe((value) => {
+      this.checkKodePekerjaan();
+    });
   }
 
   codeJob: any;
   codeCompany: any;
   descJob: any;
   form!: FormGroup;
-  jobStat: any;
+  boxInt: any;
+  boxEnt: any;
   status: any = '0 - ACTIVE';
   notes: any;
   jobPoll: any;
@@ -47,6 +57,7 @@ export class TambahJobComponent implements OnInit {
     { kode_perusahaan: 'MUF', kode_perus_disp: 'MUF - Mandiri Utama Finance' },
   ];
   filteredKodePerusahaan: any = this.dataKodePerusahaan;
+  dataKodePekerjaan: checkKodePekerjaan[] = [];
 
   cekValidasi() {
     this.form = this.formBuilder.group(
@@ -77,31 +88,71 @@ export class TambahJobComponent implements OnInit {
     return null;
   }
 
-  // checkboxValidator(formGroup: FormGroup) {
-  //   const boxInternal = formGroup.get('boxInternal');
-  //   const boxExternal = formGroup.get('boxExternal');
+  checkKodePekerjaan() {
+    const codeJobValue = this.form.controls.codeJob.value;
+    if (codeJobValue.length === 3) {
+      this.services.getAllJob('allJob').subscribe(
+        (res) => {
+          console.log(res);
+          this.dataKodePekerjaan = [];
+          res.body.data.forEach((element: any) => [
+            this.dataKodePekerjaan.push({
+              empl_job_code: element.empl_job_code,
+            }),
+          ]);
 
-  //   if (boxInternal && boxExternal) {
-  //     if (boxInternal.value === false && boxExternal.value === false) {
-  //       boxInternal.setErrors({ required: true });
-  //       boxExternal.setErrors({ required: true });
-  //     } else {
-  //       boxInternal.setErrors(null);
-  //       boxExternal.setErrors(null);
-  //     }
-  //   }
-  // }
+          // Lakukan validasi dan tindakan selanjutnya di sini
+          const codeJobExists = this.dataKodePekerjaan.some(
+            (job: any) => job.empl_job_code === codeJobValue
+          );
+          if (codeJobExists) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Kode pekerjaan sudah ada!',
+            });
+          } else {
+            // Kode pekerjaan valid, lakukan tindakan selanjutnya
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+  }
 
   saveJob() {
-    console.log(this.form.value.codeJob);
-    console.log(this.form.value.codeCompany);
-    console.log(this.form.value.descJob);
-    console.log(this.form.value.boxInternal);
-    console.log(this.form.value.boxExternal);
-    console.log(this.status);
-    console.log(this.notes);
-    let poll = this.form.value.jobPoll;
-    console.log(poll);
+    this.flagJobStatus();
+    let parameter = {
+      empl_job_code: this.form.value.codeJob,
+      empl_com_id: this.form.value.codeCompany,
+      empl_job_desc: this.form.value.descJob,
+      empl_job_status: this.boxInt + this.boxEnt,
+      empl_deleted: '0',
+      empl_job_notes: this.form.value.notes,
+      empl_flag_pool: this.form.value.jobPoll,
+    };
+    console.log(parameter);
+    if (this.form.invalid) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Isian anda tidak lengkap!',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
+    this.services.insertUpdateJob('insertUpdate', parameter).subscribe(
+      (res) => {
+        console.log(res);
+        this.dialogRef.close(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   clearInput() {
@@ -113,6 +164,34 @@ export class TambahJobComponent implements OnInit {
     // this.form.controls.status.reset();
     this.form.controls.notes.reset();
     this.jobPoll = '1';
+  }
+
+  saveJobs() {
+    this.flagJobStatus();
+    console.log(this.form.value.codeJob);
+    console.log(this.form.value.codeCompany);
+    console.log(this.form.value.descJob);
+    // console.log(this.form.value.boxInternal);
+    console.log(this.boxInt);
+    // console.log(this.form.value.boxExternal);
+    console.log(this.boxEnt);
+    console.log(this.status);
+    console.log(this.form.value.notes);
+    let poll = this.form.value.jobPoll;
+    console.log(poll);
+  }
+
+  flagJobStatus() {
+    if (this.form.value.boxInternal == true) {
+      this.boxInt = 'I';
+    } else {
+      this.boxInt = '';
+    }
+    if (this.form.value.boxExternal == true) {
+      this.boxEnt = 'E';
+    } else {
+      this.boxEnt = '';
+    }
   }
 
   closeTambahJob() {

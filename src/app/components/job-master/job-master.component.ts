@@ -54,22 +54,58 @@ export class JobMasterComponent implements OnInit {
     this.dialog
       .open(TambahJobComponent, dialogConfig)
       .afterClosed()
-      .subscribe((res) => {
-        console.log(res);
-      });
+      .subscribe(
+        (res) => {
+          console.log(res);
+          if (res && res.hasOwnProperty('status') && res.status === 200) {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: res.body.message,
+              showConfirmButton: true,
+              confirmButtonText: 'Ya',
+              confirmButtonColor: '#086bff',
+            }).then((res) => {
+              if (res.isConfirmed) {
+              } else {
+              }
+            });
+            this.getListAllJob();
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
-  editJob() {
+  editJob(element: any) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = false;
     dialogConfig.disableClose = false;
     dialogConfig.width = '50%';
     dialogConfig.height = '85%';
+    dialogConfig.data = element; // Mengirimkan elemen ke dialog menggunakan properti 'data'
     this.dialog
       .open(EditJobComponent, dialogConfig)
       .afterClosed()
       .subscribe((res) => {
         console.log(res);
+        if (res && res.hasOwnProperty('status') && res.status === 200) {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: res.body.message,
+            showConfirmButton: true,
+            confirmButtonText: 'Ya',
+            confirmButtonColor: '#086bff',
+          }).then((res) => {
+            if (res.isConfirmed) {
+            } else {
+            }
+          });
+          this.getListAllJob();
+        }
       });
   }
 
@@ -90,7 +126,12 @@ export class JobMasterComponent implements OnInit {
           this.dataAllJob.push({
             empl_job_code: element.empl_job_code,
             empl_job_desc: element.empl_job_desc,
+            empl_log_id: element.empl_log_id,
             empl_deleted: status,
+            empl_job_status: element.empl_job_status,
+            empl_com_id: element.empl_com_id,
+            empl_job_notes: element.empl_job_notes,
+            empl_flag_pool: element.empl_flag_pool,
           });
         });
         this.dataSource = new MatTableDataSource(this.dataAllJob);
@@ -117,10 +158,10 @@ export class JobMasterComponent implements OnInit {
         text: 'Apakah anda yakin ingin menonaktifkan?',
         showConfirmButton: true,
         confirmButtonText: 'Ya',
-        confirmButtonColor: '#335980',
+        confirmButtonColor: '#086bff',
         showCancelButton: true,
         cancelButtonText: 'Tidak',
-        cancelButtonColor: '#58D68D',
+        cancelButtonColor: '#f44336',
       }).then((res) => {
         if (res.isConfirmed) {
           this.services.deleteJob('deleteJob', parameter).subscribe(
@@ -148,10 +189,10 @@ export class JobMasterComponent implements OnInit {
         text: 'Apakah anda yakin ingin mengaktifkan?',
         showConfirmButton: true,
         confirmButtonText: 'Ya',
-        confirmButtonColor: '#335980',
+        confirmButtonColor: '#086bff',
         showCancelButton: true,
         cancelButtonText: 'Tidak',
-        cancelButtonColor: '#58D68D',
+        cancelButtonColor: '#f44336',
       }).then((res) => {
         if (res.isConfirmed) {
           this.services.deleteJob('deleteJob', parameter).subscribe(
