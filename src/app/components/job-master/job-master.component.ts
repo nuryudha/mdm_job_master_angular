@@ -24,25 +24,60 @@ export class JobMasterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.ngAfterViewInit();
     this.getListAllJob();
-    this.status_non_aktif = true;
     this.dataSource = new MatTableDataSource(this.dataAllJob);
+    this.status_non_aktif = true;
   }
 
-  @ViewChild(MatPaginator) MatPaginator!: MatPaginator;
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+  }
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = ['jobCode', 'jobDesc', 'status', 'action'];
-  dataSource = new MatTableDataSource<listAllJob>();
+  dataSource!: MatTableDataSource<listAllJob>;
   dataAllJob: listAllJob[] = [];
   searchJob: any;
   status_aktif: any = false;
   status_non_aktif: any = false;
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.MatPaginator;
-    this.dataSource.sort = this.sort;
+  getListAllJob() {
+    this.dataSource = new MatTableDataSource(this.dataAllJob);
+    this.services.getAllJob('allJob').subscribe(
+      (res) => {
+        let status: any;
+        console.log(res.body.data);
+        res.body.data.forEach((element: any) => {
+          if (element.empl_deleted == '0') {
+            status = 'ACTIVE';
+          } else if (element.empl_deleted == '1') {
+            status = 'NON - ACTIVE';
+          } else {
+            status = 'UNKNOWN';
+          }
+          this.dataAllJob.push({
+            empl_job_code: element.empl_job_code,
+            empl_job_desc: element.empl_job_desc,
+            empl_log_id: element.empl_log_id,
+            empl_deleted: status,
+            empl_job_status: element.empl_job_status,
+            empl_com_id: element.empl_com_id,
+            empl_job_notes: element.empl_job_notes,
+            empl_flag_pool: element.empl_flag_pool,
+          });
+        });
+        this.dataSource = new MatTableDataSource(this.dataAllJob);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.ngAfterViewInit();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   tambahJob() {
@@ -107,40 +142,6 @@ export class JobMasterComponent implements OnInit {
           this.getListAllJob();
         }
       });
-  }
-
-  getListAllJob() {
-    this.services.getAllJob('allJob').subscribe(
-      (res) => {
-        this.dataAllJob = [];
-        let status: any;
-        console.log(res.body.data);
-        res.body.data.forEach((element: any) => {
-          if (element.empl_deleted == '0') {
-            status = 'ACTIVE';
-          } else if (element.empl_deleted == '1') {
-            status = 'NON - ACTIVE';
-          } else {
-            status = 'UNKNOWN';
-          }
-          this.dataAllJob.push({
-            empl_job_code: element.empl_job_code,
-            empl_job_desc: element.empl_job_desc,
-            empl_log_id: element.empl_log_id,
-            empl_deleted: status,
-            empl_job_status: element.empl_job_status,
-            empl_com_id: element.empl_com_id,
-            empl_job_notes: element.empl_job_notes,
-            empl_flag_pool: element.empl_flag_pool,
-          });
-        });
-        this.dataSource = new MatTableDataSource(this.dataAllJob);
-        this.ngAfterViewInit();
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
   }
 
   changeStatus(status: any) {

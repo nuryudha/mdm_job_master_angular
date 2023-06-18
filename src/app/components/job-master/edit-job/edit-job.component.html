@@ -25,7 +25,7 @@
             />
 
             <mat-error *ngIf="form.controls.codeJob.hasError('required')"
-              >INI ERROR</mat-error
+              >Harus Diisi</mat-error
             >
           </mat-form-field>
         </div>
@@ -54,6 +54,9 @@
                 {{ option.kode_perus_disp }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="form.controls.codeCompany.hasError('required')"
+              >Harus dipilih !
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -65,6 +68,9 @@
         <div class="col">
           <mat-form-field appearance="fill">
             <input matInput formControlName="descJob" />
+            <mat-error *ngIf="form.controls.descJob.hasError('required')"
+              >Harus diisi !
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -109,6 +115,9 @@
         <div class="col">
           <mat-form-field appearance="fill">
             <textarea matInput formControlName="notes"></textarea>
+            <mat-error *ngIf="form.controls.notes.hasError('required')"
+              >Harus diisi !
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -151,10 +160,12 @@
 
       <div class="d-flex mt-4">
         <div class="me-auto p">
+          <!-- ! BISA DIFUNGSIIN CLEAR -->
           <button
             mat-raised-button
             class="btnClear me-2"
             (click)="clearInput()"
+            type="button"
           >
             Clear
           </button>

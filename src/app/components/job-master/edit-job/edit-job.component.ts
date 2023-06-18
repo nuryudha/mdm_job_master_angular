@@ -83,13 +83,16 @@ export class EditJobComponent implements OnInit {
   }
 
   clearInput() {
-    this.form.controls.codeJob.reset();
-    this.form.controls.codeCompany.reset();
-    this.form.controls.descJob.reset();
-    // this.internal = false;
-    // this.external = false;
-    this.form.controls.status.reset();
-    this.form.controls.notes.reset();
+    this.form.reset({
+      codeJob: this.data.empl_job_code,
+      codeCompany: '',
+      descJob: '',
+      status: '0 - ACTIVE',
+      boxInternal: false,
+      boxExternal: false,
+      notes: '',
+    });
+    this.form.get('jobPoll')?.setValue(null);
   }
 
   saveJob() {

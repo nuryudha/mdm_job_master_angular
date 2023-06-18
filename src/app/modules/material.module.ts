@@ -13,6 +13,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NgModule } from '@angular/core';
 
@@ -32,6 +33,7 @@ const materialComponent = [
   MatPaginatorModule,
   MatDialogModule,
   MatAutocompleteModule,
+  MatSortModule,
 ];
 @NgModule({
   declarations: [],

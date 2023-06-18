@@ -100,8 +100,6 @@ export class TambahJobComponent implements OnInit {
               empl_job_code: element.empl_job_code,
             }),
           ]);
-
-          // Lakukan validasi dan tindakan selanjutnya di sini
           const codeJobExists = this.dataKodePekerjaan.some(
             (job: any) => job.empl_job_code === codeJobValue
           );
@@ -112,7 +110,6 @@ export class TambahJobComponent implements OnInit {
               text: 'Kode pekerjaan sudah ada!',
             });
           } else {
-            // Kode pekerjaan valid, lakukan tindakan selanjutnya
           }
         },
         (err) => {
@@ -156,14 +153,18 @@ export class TambahJobComponent implements OnInit {
   }
 
   clearInput() {
-    this.form.controls.codeJob.reset();
-    this.form.controls.codeCompany.reset();
-    this.form.controls.descJob.reset();
-    // this.internal = false;
-    // this.external = false;
-    // this.form.controls.status.reset();
-    this.form.controls.notes.reset();
-    this.jobPoll = '1';
+    this.form.reset({
+      codeJob: '',
+      codeCompany: '',
+      descJob: '',
+      status: '0 - ACTIVE',
+      boxInternal: false,
+      boxExternal: false,
+      notes: '',
+    });
+    this.form.get('jobPoll')?.setValue(null);
+
+    // this.form.controls.codeJob.reset();
   }
 
   saveJobs() {
