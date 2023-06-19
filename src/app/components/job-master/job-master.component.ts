@@ -27,6 +27,7 @@ export class JobMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListAllJob();
+    this.dataSource = new MatTableDataSource(this.dataAllJob);
   }
 
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;
@@ -45,7 +46,7 @@ export class JobMasterComponent implements OnInit {
   status_non_aktif: any = false;
 
   getListAllJob() {
-    this.dataSource = new MatTableDataSource(this.dataAllJob);
+    this.dataAllJob = [];
     this.services.getAllJob('allJob').subscribe(
       (res) => {
         let status: any;
