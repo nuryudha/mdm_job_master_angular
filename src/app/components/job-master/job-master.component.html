@@ -35,7 +35,7 @@
       <div class="d-flex flex-row-reverse seGaris mb-3">
         <div>
           <mat-form-field appearance="standard" class="form-search">
-            <input matInput [(ngModel)]="searchJob" />
+            <input matInput [(ngModel)]="searchJob" (keyup)="applyFilter()" />
           </mat-form-field>
         </div>
         <div class="me-2 fontSearch">Search :</div>
@@ -49,7 +49,7 @@
             *matHeaderCellDef
             class="text-header"
             style="width: 7rem"
-            mat-sort-header
+            mat-sort-header="empl_job_code"
           >
             Job Code
           </th>
@@ -65,7 +65,7 @@
             *matHeaderCellDef
             class="text-header"
             style="width: 15rem"
-            mat-sort-header
+            mat-sort-header="empl_job_desc"
           >
             Job Description
           </th>
@@ -81,6 +81,7 @@
             *matHeaderCellDef
             class="text-header"
             style="width: 15rem"
+            mat-sort-header="empl_deleted"
           >
             Status
           </th>
@@ -147,7 +148,7 @@
       </table>
 
       <mat-paginator
-        [pageSizeOptions]="[5, 10, 20]"
+        [pageSizeOptions]="[10, 20, 100]"
         showFirstLastButtons
         aria-label="Select page of periodic elements"
       >

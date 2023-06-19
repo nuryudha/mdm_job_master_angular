@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { TambahJobComponent } from './tambah-job/tambah-job.component';
 import { listAllJob } from 'src/app/models/job-master/model-job-master';
 
+// import { MatSort } from '@angular/material/sort';
+
 @Component({
   selector: 'app-job-master',
   templateUrl: './job-master.component.html',
@@ -25,17 +27,15 @@ export class JobMasterComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListAllJob();
-    this.dataSource = new MatTableDataSource(this.dataAllJob);
-    this.status_non_aktif = true;
   }
+
+  @ViewChild(MatPaginator) matPaginator!: MatPaginator;
+  @ViewChild(MatSort) matSort!: MatSort;
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    // this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.matSort;
+    this.dataSource.paginator = this.matPaginator;
   }
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
 
   displayedColumns: string[] = ['jobCode', 'jobDesc', 'status', 'action'];
   dataSource!: MatTableDataSource<listAllJob>;
@@ -70,14 +70,16 @@ export class JobMasterComponent implements OnInit {
           });
         });
         this.dataSource = new MatTableDataSource(this.dataAllJob);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
         this.ngAfterViewInit();
       },
       (err) => {
         console.log(err);
       }
     );
+  }
+
+  applyFilter() {
+    this.dataSource.filter = this.searchJob.trim().toLowerCase();
   }
 
   tambahJob() {
