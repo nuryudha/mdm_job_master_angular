@@ -46,7 +46,7 @@ export class JobMasterComponent implements OnInit {
   status_non_aktif: any = false;
 
   getListAllJob() {
-    this.dataAllJob = [];
+    this.dataAllJob = []; // biar ga duplikasi data
     this.services.getAllJob('allJob').subscribe(
       (res) => {
         let status: any;
