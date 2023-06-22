@@ -105,7 +105,7 @@ export class KosongComponent implements OnInit {
               title: res.body.message,
               showConfirmButton: true,
               confirmButtonText: 'Ya',
-              confirmButtonColor: '#086bff',
+              confirmButtonColor: '#4758b8',
             }).then((res) => {
               if (res.isConfirmed) {
               } else {
@@ -139,7 +139,7 @@ export class KosongComponent implements OnInit {
             title: res.body.message,
             showConfirmButton: true,
             confirmButtonText: 'Ya',
-            confirmButtonColor: '#086bff',
+            confirmButtonColor: '#4758b8',
           }).then((res) => {
             if (res.isConfirmed) {
             } else {
@@ -165,7 +165,7 @@ export class KosongComponent implements OnInit {
         text: 'Apakah anda yakin ingin menonaktifkan?',
         showConfirmButton: true,
         confirmButtonText: 'Ya',
-        confirmButtonColor: '#086bff',
+        confirmButtonColor: '#4758b8',
         showCancelButton: true,
         cancelButtonText: 'Tidak',
         cancelButtonColor: '#f44336',
@@ -196,7 +196,7 @@ export class KosongComponent implements OnInit {
         text: 'Apakah anda yakin ingin mengaktifkan?',
         showConfirmButton: true,
         confirmButtonText: 'Ya',
-        confirmButtonColor: '#086bff',
+        confirmButtonColor: '#4758b8',
         showCancelButton: true,
         cancelButtonText: 'Tidak',
         cancelButtonColor: '#f44336',
