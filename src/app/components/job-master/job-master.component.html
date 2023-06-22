@@ -129,16 +129,18 @@
           </th>
           <td mat-cell *matCellDef="let element" style="text-align: center">
             <button
-              mat-mini-fab
+              mat-icon-button
               color="primary"
               class="btn-edit me-3"
               (click)="editJob(element)"
               *ngIf="element.empl_deleted == 'ACTIVE'"
+              matTooltip="edit"
             >
               <mat-icon>edit</mat-icon>
             </button>
+
             <button
-              mat-mini-fab
+              mat-icon-button
               color="warn"
               class="button-non-aktifkan"
               (click)="changeStatus(element)"
@@ -147,7 +149,7 @@
               <mat-icon>close_outline</mat-icon>
             </button>
             <button
-              mat-mini-fab
+              mat-icon-button
               color="primary"
               class="button-aktifkan"
               (click)="changeStatus(element)"

@@ -96,7 +96,7 @@ th.text-header {
   background-color: rgb(159, 204, 255);
   /* color: white; */
 }
-
+/*
 .button-aktifkan {
   background-color: #0d9c00;
   border-color: #0d9c00;
@@ -119,9 +119,9 @@ th.text-header {
   background-color: #a82f26;
   border-color: #a82f26;
   color: #fff;
-}
+} */
 
-.btn-edit {
+/* .btn-edit {
   background-color: #086bff;
   color: #ffffff;
 }
@@ -129,7 +129,7 @@ th.text-header {
 .btn-edit:hover {
   background-color: #08449e;
   color: #ffffff;
-}
+} */
 
 mat-card.tambah-informasi-employee {
   margin-top: 1rem;

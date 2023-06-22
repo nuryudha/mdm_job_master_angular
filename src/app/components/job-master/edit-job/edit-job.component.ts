@@ -102,7 +102,6 @@ export class EditJobComponent implements OnInit {
       empl_com_id: this.form.value.codeCompany,
       empl_job_desc: this.form.value.descJob,
       empl_job_status: this.boxInt + this.boxEnt,
-      empl_deleted: '0',
       empl_job_notes: this.form.value.notes,
       empl_flag_pool: this.form.value.jobPoll,
     };
@@ -117,7 +116,7 @@ export class EditJobComponent implements OnInit {
       });
       return;
     }
-    this.services.insertUpdateJob('insertUpdate', parameter).subscribe(
+    this.services.insertUpdateJob('updateJob', parameter).subscribe(
       (res) => {
         console.log(res);
         this.dialogRef.close(res);

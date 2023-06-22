@@ -108,6 +108,15 @@ export class TambahJobComponent implements OnInit {
               icon: 'error',
               title: 'Error',
               text: 'Kode pekerjaan sudah ada!',
+              confirmButtonText: 'Ya',
+              confirmButtonColor: '#4758b8',
+            }).then((res) => {
+              if (res.isConfirmed) {
+                this.form.get('codeJob')?.setValue('');
+                this.form.get('codeJob')?.markAsPristine();
+                this.form.get('codeJob')?.markAsUntouched();
+              } else {
+              }
             });
           } else {
           }
@@ -141,7 +150,7 @@ export class TambahJobComponent implements OnInit {
       });
       return;
     }
-    this.services.insertUpdateJob('insertUpdate', parameter).subscribe(
+    this.services.insertUpdateJob('insertJob', parameter).subscribe(
       (res) => {
         console.log(res);
         this.dialogRef.close(res);
